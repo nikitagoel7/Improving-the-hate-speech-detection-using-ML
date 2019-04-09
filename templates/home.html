@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html>
+<title>HATE SPEECH DETECTOR</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" >
+<head>
+<link rel="icon" href="static/img/images.jpeg" type="image/gif" sizes="64x64">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.slim.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" ></script>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src = "https://code.highcharts.com/highcharts.js"></script>
+
+
+<script>
+
+window.onload = function () {
+
+// Bar Graph 
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	title:{
+		text: "Comparison of PMI and PMI-NGRAMS for HATE DETECTION"
+	},	
+	axisY: {
+		title: "Accuracy (in %)",
+		titleFontColor: "#4F81BC",
+		lineColor: "#4F81BC",
+		labelFontColor: "#4F81BC",
+		tickColor: "#4F81BC"
+	},	
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor:"pointer",
+		itemclick: toggleDataSeries
+	},
+	data: [{
+		type: "column",
+		name: "Accuracy of PMI Technique",
+		legendText: "PMI Technique",
+		showInLegend: true, 
+		dataPoints:[
+			{ label: "Comparison of Feature Extraction Techniques",  y: {{ pmi }}, indexLabel: "64.71 %" }
+		]
+	},
+	{
+		type: "column",	
+		name: "Accuracy of PMI-N-GRAMS Technique",
+		legendText: "PMI-N-GRAMS Technique",
+		//axisYType: "secondary",
+		showInLegend: true,
+		dataPoints:[
+			{ label: "Comparison of Feature Extraction Techniques", y: {{ pmi_ngram }}, indexLabel: "69.57 %" }
+		]
+	}]
+});
+chart.render();
+
+function toggleDataSeries(e) {
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else {
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+
+// Line Chart 1
+var options = {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Comparison of proposed PMI technique vs existing PMI technique "
+	},
+	axisX:{
+		title: "Total number of Tweets"
+		//valueFormatString: "DD MMM"
+	},
+	axisY: {
+		title: "Accuracy (in %)",
+		suffix: "%",
+		minimum: 0,
+		maximum: 100
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "line",
+		showInLegend: true,
+		name: "Proposed Technique",
+		markerType: "circle",
+		//xValueFormatString: "DD MMM, YYYY",
+		color: "#F08080",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 66.67 },
+			{ x: 4000, y: 40.0 },
+			{ x: 6000, y: 95 },
+			{ x: 8000, y: 98 },
+			{ x: 10000, y: 90.91  },
+			{ x: 12000, y: 69.23 },
+			{ x: 14000, y: 98, indexLabel: "highest",markerColor: "DarkSlateGrey", markerType: "triangle" },
+			{ x: 16000, y: 64.71 }
+		]
+	},
+	{
+		type: "line",
+		showInLegend: true,
+		name: "Existing Technique",
+		lineDashType: "dash",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 33.33 },
+			{ x: 4000, y: 40.0 },
+			{ x: 6000, y: 90 },
+			{ x: 8000, y: 94 },
+			{ x: 10000, y: 72.73 },
+			{ x: 12000, y: 23.08, indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+			{ x: 14000, y: 86.67 },
+			{ x: 16000, y: 47.06 }
+		]
+	}]
+};
+$("#chartContainer1").CanvasJSChart(options);
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+
+// Line Chart 2
+var options = {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Comparison of proposed N-Gram technique vs existing N-Gram technique "
+	},
+	axisX:{
+		title: "Total number of Tweets"
+		//valueFormatString: "DD MMM"
+	},
+	axisY: {
+		title: "Accuracy (in %)",
+		suffix: "%",
+		minimum: 0,
+		maximum: 100
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "line",
+		showInLegend: true,
+		name: "Proposed Technique",
+		markerType: "circle",
+		//xValueFormatString: "DD MMM, YYYY",
+		color: "#F08080",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 65.01 },
+			{ x: 4000, y: 56.09 },
+			{ x: 6000, y: 66.94 },
+			{ x: 8000, y: 61.92 },
+			{ x: 10000, y: 77.41 },
+			{ x: 12000, y: 88.41, indexLabel: "highest",markerColor: "DarkSlateGrey", markerType: "triangle" },
+			{ x: 14000, y: 83.41 },
+			{ x: 16000, y: 88.45 }
+		]
+	},
+	{
+		type: "line",
+		showInLegend: true,
+		name: "Existing Technique Reference 1" ,
+		lineDashType: "dash",
+		
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 67 },
+			{ x: 4000, y: 70 },
+			{ x: 6000, y: 72 },
+			{ x: 8000, y: 73 },
+			{ x: 10000, y: 76 },
+			{ x: 12000, y: 77 },
+			{ x: 14000, y: 78 },
+			{ x: 16000, y: 78 }
+		]
+	},
+	
+	{
+		type: "line",
+		showInLegend: true,
+		name: "Existing Technique Reference 2",
+		lineDashType: "dot",
+		color:"#4F81BC",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 52, indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+			{ x: 4000, y: 77 },
+			{ x: 6000, y: 80 },
+			{ x: 8000, y: 85 },
+			{ x: 10000, y: 87 },
+			{ x: 12000, y: 85 },
+			{ x: 14000, y: 85 },
+			{ x: 16000, y: 90 }
+		]
+	}]
+};
+$("#chartContainer2").CanvasJSChart(options);
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+
+// Line Chart 3
+var options = {
+	animationEnabled: true,
+	title: {
+		text: "Hate Prediction using PMI-N-GRAMS"
+	},
+	axisX: {
+		title: "Total Number of Tweets",
+		interval: 1
+	},
+	axisY: {
+		title: "Accuracy (in %)",
+		suffix: "%",
+		includeZero: true
+	},
+	toolTip: {
+		shared: true
+	},
+
+	data: [{
+		type: "line",
+		name: "Accuracy:",
+		toolTipContent: "<b>For {label} tweets in the dataset,</b><br><span style=\"color:#4F81BC\">{name}</span> {y}%",
+		markerColor: "white",
+		markerBorderColor: "black",
+		markerSize: 8,
+		markerBorderThickness: 1,
+		dataPoints: [
+			{ y: 35, label: "2000" },  //random_state = 500
+			{ y: 33.72,  label: "4000" },  //random_state = 100
+			{ y: 23.68, label: "6000" },  //random_state = 500
+			{ y: 23.0, label: "8000", indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },  //random_state = 300
+			{ y: 74.32, label: "10000", indexLabel: "highest",markerColor: "red", markerType: "triangle" }, //random_state = 300
+			{ y: 61.64, label: "12000" }, //random_state = 300
+			{ y: 70.59, label: "14000" }, //random_state = 300
+			{ y: 60.19, label: "16000" }  //random_state = 300	
+		]
+	}]
+};
+$("#chartContainer3").CanvasJSChart(options);
+
+
+
+
+
+// Line Chart 4
+var options = {
+	animationEnabled: true,
+	theme: "light2",
+	title: {
+		text: "Hate Prediction using TF-IDF"
+	},
+	axisX: {
+		title: "Total Number of Tweets",
+		//interval: 1
+	},
+	axisY: {
+		title: "Accuracy (in %)",
+		suffix: "%",
+		includeZero: true
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+
+	data: [{
+		type: "line",
+		name: "Proposed Technique",
+		lineDashType: "line",
+		showInLegend: true,
+		toolTipContent: "<b>For {x} tweets in the dataset:</b><br><span style=\"color:#4F81BC\">{name}</span> {y}%",
+		dataPoints: [
+			{ y: 82.29, x: 2000, indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },  //random_state = 500
+			{ y: 89.39,  x: 4000 },  //random_state = 100
+			{ y: 88.18, x: 6000 },  //random_state = 500
+			{ y: 85.01, x: 8000 },  //random_state = 300
+			{ y: 94.35, x: 10000}, //random_state = 300
+			{ y: 86.63, x: 12000 }, //random_state = 300
+			{ y: 94.36, x: 14000, indexLabel: "highest",markerColor: "red", markerType: "triangle"  }, //random_state = 300
+			{ y: 93.52, x: 16000 }  //random_state = 300	
+		]
+	},
+	
+	{
+		type: "line",
+		name: "Existing Technique",
+		lineDashType: "dash",
+		showInLegend: true,
+		toolTipContent: "<b>For {x} tweets in the dataset:</b><br><span style=\"color:#4F81BC\">{name}</span> {y}%",
+		dataPoints: [
+			{ y: 89.93, x: 2000 },  //random_state = 500
+			{ y: 76.63,  x: 4000 },  //random_state = 100
+			{ y: 75.95, x: 6000 },  //random_state = 500
+			{ y: 84.81, x: 8000 },  //random_state = 300
+			{ y: 82.73, x: 10000 }, //random_state = 300
+			{ y: 73.08, x: 12000 }, //random_state = 300
+			{ y: 86.67, x: 14000 }, //random_state = 300
+			{ y: 77.05, x: 16000 }  //random_state = 300	
+		]
+	}]
+};
+$("#chartContainer4").CanvasJSChart(options);
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+
+
+// Line Chart 5
+var options = {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Comparison of all the techniques "
+	},
+	axisX:{
+		title: "Total number of Tweets"
+		//valueFormatString: "DD MMM"
+	},
+	axisY: {
+		title: "Accuracy (in %)",
+		suffix: "%",
+		minimum: 0,
+		maximum: 100
+	},
+	toolTip:{
+		shared:true
+	},  
+	legend:{
+		cursor:"pointer",
+		verticalAlign: "bottom",
+		horizontalAlign: "left",
+		dockInsidePlotArea: true,
+		itemclick: toogleDataSeries
+	},
+	data: [{
+		type: "line",
+		showInLegend: true,
+		name: "N-Gram Technique",
+		markerType: "circle",
+		//xValueFormatString: "DD MMM, YYYY",
+		color: "#F08080",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 67 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+			{ x: 4000, y: 70 },
+			{ x: 6000, y: 72 },
+			{ x: 8000, y: 73 },
+			{ x: 10000, y: 87 , indexLabel: "highest", markerColor: "DarkSlateGrey", markerType: "triangle" },
+			{ x: 12000, y: 75 },
+			{ x: 14000, y: 85 },
+			{ x: 16000, y: 86 }
+		]
+	},
+	{
+		type: "line",
+		showInLegend: true,
+		name: "PMI Technique" ,
+		lineDashType: "dash",
+		
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 33.33 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+			{ x: 4000, y: 40 },
+			{ x: 6000, y: 90 },
+			{ x: 8000, y: 94 , indexLabel: "highest", markerColor: "DarkSlateGrey", markerType: "triangle" },
+			{ x: 10000, y: 72.73 },
+			{ x: 12000, y: 63.08 },
+			{ x: 14000, y: 76.67 },
+			{ x: 16000, y: 67.05 }
+		]
+	},
+	
+	{
+		type: "line",
+		showInLegend: true,
+		name: "TF-IDF Technique" ,
+		lineDashType: "dash",
+		color:"#1a1a1a",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 89.93 , indexLabel: "highest", markerColor: "DarkSlateGrey", markerType: "triangle" },
+			{ x: 4000, y: 86.63 },
+			{ x: 6000, y: 85.95 },
+			{ x: 8000, y: 84.81 },
+			{ x: 10000, y: 82.73 },
+			{ x: 12000, y: 73.08 , indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross" },
+			{ x: 14000, y: 86.67 },
+			{ x: 16000, y: 77.05 }
+		]
+	},
+	
+	{
+		type: "line",
+		showInLegend: true,
+		name: "PMI - N-GRAMS Technique",
+		lineDashType: "dot",
+		color:"#4F81BC",
+		//yValueFormatString: "#,##0K",
+		dataPoints: [
+			{ x: 2000, y: 55 },
+			{ x: 4000, y: 52.72 },
+			{ x: 6000, y: 43.69 },
+			{ x: 8000, y: 43, indexLabel: "lowest",markerColor: "DarkSlateGrey", markerType: "cross"  },
+			{ x: 10000, y: 74.32 },
+			{ x: 12000, y: 81.64 },
+			{ x: 14000, y: 90.59 },
+			{ x: 16000, y: 91.89 , indexLabel: "highest", markerColor: "DarkSlateGrey", markerType: "triangle" }
+		]
+	}]
+};
+$("#chartContainer6").CanvasJSChart(options);
+
+function toogleDataSeries(e){
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	} else{
+		e.dataSeries.visible = true;
+	}
+	e.chart.render();
+}
+
+
+
+// Bar Graph 2
+var chart = new CanvasJS.Chart("chartContainer5", {
+	animationEnabled: true,
+	title:{
+		text: "Comparison of TF-IDF and N-Gram wrt test sizes"
+	},	
+	axisY: {
+		title: "Accuracy of TF-IDF",
+		titleFontColor: "#117A65",
+		lineColor: "#117A65",
+		labelFontColor: "#117A65",
+		tickColor: "#117A65"
+	},
+	axisY2: {
+		title: "Accuracy of N-gram",
+		titleFontColor: "#82E0AA",
+		lineColor: "#82E0AA",
+		labelFontColor: "#82E0AA",
+		tickColor: "#82E0AA"
+	},	
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor:"pointer",
+		itemclick: toggleDataSeries
+	},
+	data: [{
+		type: "column",
+		name: "TF-IDF",
+		legendText: "TF-IDF",
+		color: "#117A65",
+		showInLegend: true, 
+		dataPoints:[
+			{ label: "0.1", y: 89.93 },
+			{ label: "0.2", y: 86.63 },
+			{ label: "0.3", y: 85.95 },
+			{ label: "0.4", y: 94.81 }
+			
+		]
+	},
+	{
+		type: "column",	
+		name: "N-GRAMS",
+		legendText: "N-GRAMS",
+		axisYType: "secondary",
+		showInLegend: true,
+		color: "#82E0AA",
+		dataPoints:[
+			{ label: "0.1", y: 97.91 },
+			{ label: "0.2", y: 88.41 },
+			{ label: "0.3", y: 67.96 },
+			{ label: "0.4", y: 77.56 },
+			
+		]
+	}]
+});
+chart.render();
+
+function toggleDataSeries(e) {
+	if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+		e.dataSeries.visible = false;
+	}
+	else {
+		e.dataSeries.visible = true;
+	}
+	chart.render();
+}
+
+}
+
+</script>
+
+
+
+
+<style>
+html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+</style>
+</head>
+
+<body class="w3-theme-l5">
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+	<div class="container">
+		
+		<div class="row">
+		
+			<div class="col-md-2">
+			
+			</div>
+			
+			<div class="col-sm-8">
+			
+				<a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-large" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
+				
+				<a href="home.html" class="w3-bar-item w3-button w3-padding-medium w3-theme-d2 w3-round">IMPROVING THE PERFORMANCE OF HATE SPEECH DETECTION USING MACHINE LEARNING TECHNIQUES</a>
+			
+			</div>
+			
+			<div class="col-md-2">
+			
+			</div>
+		
+		</div>
+		
+	</div>
+    
+</nav>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-warning">
+    
+	<a class="navbar-brand" href="home.html">
+	
+		<img src="static/img/logo.jpeg" width="50" height="50" class="d-inline-block align-top " alt=""> 
+	
+	</a> <!--src = "images/IT.jpeg" -->
+   
+  
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    
+		<span class="navbar-toggler-icon"></span>
+	
+	</button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+		<ul class="navbar-nav mr-auto">
+	
+			<li class="nav-item active">
+		
+				<strong><a class="nav-link text-dark" href="home.html">JAYPEE INSTITUTE OF INFORMATION TECHNOLOGY</a></strong>
+			
+			</li>
+			
+			<li class="nav-item active ml-4">
+			  
+				<a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+			
+			</li>
+			
+			<li class="nav-item active ml-3">
+			  
+				<a class="nav-link" href="#">About Us</a>
+			
+			</li>
+
+			
+			<li class="nav-item active ml-3">
+			
+				<a class="nav-link" href="tfidf.html">TF-IDF</a>
+			
+			</li>
+			
+			<li class="nav-item active ml-3">
+			  
+				<a class="nav-link" href="ngram.html">N-GRAMS</a>
+			
+			</li>
+			
+			<li class="nav-item active ml-3">
+			  
+				<a class="nav-link" href="pmi.html">PMI</a>
+			
+			</li>
+			
+			<li class="nav-item active ml-3">
+			  
+				<a class="nav-link" href="ngrampmi.html">PMI-NGRAMS</a>
+			
+			</li>
+		
+		</ul>
+		
+		<form class="form-inline my-2 my-lg-0">
+        
+			<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			
+			<button class="btn btn-danger my-2 my-sm-0" type="submit">Search</button>
+		
+		</form>
+    
+	</div>
+  
+</nav>
+
+<!-- Navbar on small screens -->
+<div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
+	
+	<a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
+	
+	<a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
+	
+	<a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+	
+	<a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
+
+</div>
+<!--Navbar Ends-->
+
+
+
+<!-- Page Container -->
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">    
+  
+	<div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+		
+		<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+		
+		<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+		
+		<script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+		
+	</div>
+	
+	<br>
+	
+	<div class="w3-container w3-card w3-white w3-round w3-margin">
+		
+		<div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+		
+	</div>
+	
+	<div class="w3-container w3-card w3-white w3-round w3-margin">
+		
+		<div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+		
+	</div>
+	
+	<div class="w3-container w3-card w3-white w3-round w3-margin">
+		
+		<div id="chartContainer3" style="height: 370px; width: 100%;"></div>
+		
+	</div>
+	
+	<div class="w3-container w3-card w3-white w3-round w3-margin">
+		
+		<div id="chartContainer4" style="height: 370px; width: 100%;"></div>
+		
+	</div>
+	
+	<div class="w3-container w3-card w3-white w3-round w3-margin">
+		
+		<div id="chartContainer5" style="height: 370px; width: 100%;"></div>
+		
+	</div>
+	
+	<div class="w3-container w3-card w3-white w3-round w3-margin">
+		
+		<div id="chartContainer6" style="height: 370px; width: 100%;"></div>
+		
+	</div>
+	
+	
+  
+<!-- End Page Container -->
+	<br>
+
+</div>
+
+<br>
+
+<!-- Footer -->
+<footer class="w3-container w3-theme-d3 w3-padding-16">
+
+	<h5>Footer</h5>
+
+</footer>
+
+<footer class="w3-container w3-theme-d5" >
+	
+	<p>Made by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">CHAKOOO</a></p>
+
+</footer>
+ 
+<script>
+// Accordion
+function myFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+    x.previousElementSibling.className += " w3-theme-d1";
+  } else { 
+    x.className = x.className.replace("w3-show", "");
+    x.previousElementSibling.className = 
+    x.previousElementSibling.className.replace(" w3-theme-d1", "");
+  }
+}
+
+// Used to toggle the menu on smaller screens when clicking on the menu button
+function openNav() {
+  var x = document.getElementById("navDemo");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
+</script>
+
+</body>
+</html>
